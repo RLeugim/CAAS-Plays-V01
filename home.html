@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt"><head><meta charset="utf-8"><title>Equipa Masters · Animação de Jogadas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f3f5f8;--fg:#14253d;--mut:#5b6b80;--card:#fff;--bd:#d5dce6;--ac:#1d5fa8;--court:#f1e7d4;--ln:#8d7f66;--pl:#14253d;--plt:#fff;color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1623;--fg:#e8eef7;--mut:#9aa9bd;--card:#172234;--bd:#2a3a52;--ac:#5aa2ee;--court:#1d2a3d;--ln:#4f6483;--pl:#e8eef7;--plt:#0e1623;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1623;--fg:#e8eef7;--mut:#9aa9bd;--card:#172234;--bd:#2a3a52;--ac:#5aa2ee;--court:#1d2a3d;--ln:#4f6483;--pl:#e8eef7;--plt:#0e1623;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+.w{max-width:600px;margin:0 auto;padding:12px}
+h1{font-size:17px;margin:4px 0 10px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+.tabs button{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--fg);padding:7px 11px;border-radius:18px;font:inherit;font-size:13px;cursor:pointer}
+.tabs button.on{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin-top:8px;overflow:hidden}
+svg{display:block;width:100%;height:auto}
+.inf{padding:10px 14px}
+.inf small{color:var(--mut);font-size:12px}
+.inf b{display:block;font-size:16px;margin:2px 0}
+.inf p{margin:0;color:var(--mut)}
+.bar{display:flex;gap:4px;margin-top:8px}.bar i{flex:1;height:4px;border-radius:2px;background:var(--bd)}.bar i.on{background:var(--ac)}
+.ct{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.ct button{border:0;border-radius:10px;padding:14px;font:inherit;font-weight:600;font-size:16px;background:var(--ac);color:#fff;cursor:pointer}
+.ct button:disabled{opacity:.35}
+.sc{display:flex;gap:8px;margin-top:8px}
+.sc button{flex:1;border:1px solid var(--bd);background:var(--card);color:var(--fg);border-radius:10px;padding:9px;font:inherit;font-size:13px;cursor:pointer}
+</style></head><body><div class="w">
+<h1>🏀 Equipa Masters · Animação de jogadas</h1>
+<div class="tabs" id="tabs"></div>
+<div class="card"><svg id="sv" viewBox="-15 -40 530 515">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--ac)"/></marker></defs>
+<rect x="-15" y="-40" width="530" height="515" fill="var(--court)"/>
+<rect x="-15" y="-40" width="530" height="40" fill="var(--bd)" opacity=".5"/>
+<g fill="none" stroke="var(--ln)" stroke-width="2">
+<rect x="0" y="0" width="500" height="470"/><rect x="170" y="0" width="160" height="190"/>
+<path d="M30 0V141A237.5 237.5 0 0 0 470 141V0M190 190A60 60 0 0 0 310 190M210 52A40 40 0 0 0 290 52M220 40H280"/>
+<path d="M190 190A60 60 0 0 1 310 190" stroke-dasharray="6 5"/><circle cx="250" cy="52" r="7.5" stroke="#d2691e"/></g>
+<g id="ov" fill="none" stroke="var(--ac)" stroke-width="2.4" opacity=".6"></g>
+<g id="pg"></g><circle id="bl" r="6" fill="#e8832a" stroke="#6b3410" stroke-width="1.5"/></svg>
+<div class="inf"><small id="ct"></small><b id="tt"></b><p id="ds"></p><div class="bar" id="br"></div></div></div>
+<div class="ct"><button id="bk">◀ Recuar</button><button id="fw">Avançar ▶</button></div>
+<div class="sc"><button id="rp">↻ Repetir passo</button><button id="mi">⇋ Espelho: não</button><button id="sp">Velocidade 1×</button></div>
+</div>
+<script>
+const J=[
+{n:"Cornos · Passe",h:1,i:{1:[265,320],2:[34,60],3:[468,57],4:[404,239],5:[151,260]},s:[
+{t:"Entrada por passe",d:"1 passa a 4 na ala; 5 sobe à zona central e recebe de 4.",T:3200,m:{5:[270,160,0,200,240]},p:[[1,4,.05],[4,5,.5]]},
+{t:"Reposicionamentos",d:"5 devolve a 1 e corta ao cesto; 2 desce do canto para a ala e recebe de 1.",T:3600,m:{5:[190,62,0,215,150],2:[48,222,0,34,150,.1],1:[325,318],4:[414,250]},p:[[5,1,.03],[1,2,.5]]},
+{t:"Bloqueio de 2 e saída de 1",d:"2 desce e bloqueia; 1 contorna o bloqueio, recebe a bola em mão e sai para a ala.",T:3600,m:{2:[148,277,"s"],1:[46,270,0,170,335,.1],5:[181,57]},p:[[2,1,.78]]}]},
+{n:"Cornos · Drible",h:1,i:{1:[268,319],2:[463,52],3:[34,57],4:[146,240],5:[335,236]},s:[
+{t:"Entrada em drible",d:"1 entra em drible pelo bloqueio de 5; 2 corta pela linha final para o lado da bola.",T:3400,m:{1:[418,261,"d",330,300],2:[329,69,0,400,62,.1],5:[335,230,"s"]}},
+{t:"Continuação interior",d:"2 desce à zona e bloqueia; 5 contorna o bloqueio e corta ao cesto.",T:3400,m:{1:[455,250,"d"],2:[324,166,"s"],5:[352,76,0,320,190,.2]}},
+{t:"Opção: se 1 penetrar",d:"Se 1 penetrar, os colegas acompanham: 3 sobe à ala, 4 corta ao cesto, 2 abre para o canto.",T:3800,m:{1:[357,173,"d",420,200],5:[372,262,0,400,160],3:[100,281,0,50,170],4:[184,141],2:[465,50,0,400,110]}}]},
+{n:"Variação 3 · Stagger",h:1,i:{1:[254,319],2:[34,57],3:[468,54],4:[140,257],5:[348,245]},s:[
+{t:"Stagger: dois bloqueios",d:"1 entra em drible; 4 e 5 preparam dois bloqueios em stagger para 2.",T:3200,m:{1:[425,251,"d",320,320],4:[122,77,"s"],5:[201,159,"s",270,190]}},
+{t:"Posições de continuidade",d:"2 sai do stagger para o topo; 4 abre à ala esquerda; 1 fica no lado direito.",T:3600,m:{2:[265,302,0,180,95],4:[65,185],5:[199,190],1:[430,289,"d"]}},
+{t:"Mudança de lado: triângulo",d:"Reposicionamento no lado forte: 4 bloqueia, 3 contorna-o e recebe de 1.",T:4200,m:{2:[471,50,0,430,230],3:[173,219,0,110,110],4:[140,155,"s"],5:[321,50]},p:[[1,3,.8]]},
+{t:"OU: alternativa de continuação",d:"Alternativa ao passo 3: 3 e 4 bloqueiam, 5 aparece no poste e recebe de 1.",T:4200,b:1,m:{2:[471,50,0,430,230],3:[279,80,"s"],4:[340,311,"s",150,300],5:[200,105,0,270,150]},p:[[1,5,.8]]}]},
+{n:"Jogada 5",h:1,i:{1:[325,283],2:[446,182],3:[33,183],4:[181,183],5:[314,79]},s:[
+{t:"Entrada na ala",d:"1 entra em drible para a ala; 2 corta ao cesto e 5 desce à zona de lance livre.",T:3200,m:{1:[470,217,"d",420,290],2:[350,84,0,400,110],5:[320,220]}},
+{t:"Movimentos interiores",d:"4 corta ao cesto pelo meio; 2 sobe ao cotovelo; 1 passa a 4.",T:3400,m:{4:[301,75,0,190,100],2:[240,215],5:[305,265],1:[448,174]},p:[[1,4,.6]]},
+{t:"Inversão da bola",d:"A bola inverte: 4 → 1 → 5 → 2, enquanto 2 sobe ao topo.",T:4000,m:{2:[191,310],3:[33,198]},p:[[4,1,.02],[1,5,.36],[5,2,.68]]},
+{t:"Drible e bloqueio",d:"2 dribla para a ala; 3 vai bloquear ao cotovelo e 5 usa o bloqueio para cortar ao poste.",T:3800,m:{2:[30,215,"d",110,290],3:[318,192,"s",170,100],5:[166,132,0,320,170]}},
+{t:"Passe ao poste",d:"2 passa a 5, no poste baixo; os restantes fecham o equilíbrio.",T:3000,m:{5:[173,73],3:[306,304],4:[294,185]},p:[[2,5,.45]]}]},
+{n:"Jogada 1 · Linha Final",h:1,i:{1:[173,-14],2:[178,114],3:[309,75],4:[324,284],5:[178,64]},s:[
+{t:"Reposição e primeiros cortes",d:"1 repõe; 3 corta da direita para a esquerda e recebe; 2 desce para o topo.",T:3200,m:{3:[44,116,0,170,100],2:[177,277]},p:[[1,3,.4]]},
+{t:"Posições de referência",d:"Todos assumem as posições de referência.",T:2400,m:{3:[35,155],2:[180,284],4:[331,294]}},
+{t:"Bloqueio e passe para 2",d:"5 sobe e bloqueia junto de 3; 3 passa a 2.",T:3000,m:{5:[114,150,"s"],3:[75,175]},p:[[3,2,.55]]},
+{t:"Corte de 3 e inversão",d:"3 corta para o interior; 2 inverte a bola para 4.",T:3000,m:{3:[237,117,0,150,160]},p:[[2,4,.5]]},
+{t:"Preparação dos bloqueios",d:"3 vai ao bloco direito; 5 e 2 preparam os bloqueios na zona; 4 conduz a bola.",T:3400,m:{3:[308,53,0,260,150],5:[172,90,"s"],2:[170,185,"s"],4:[284,302]}},
+{t:"Saída de 1 pelos bloqueios",d:"1 sai da linha final, contorna os dois bloqueios e recebe de 4.",T:3800,m:{1:[146,305,0,100,160]},p:[[4,1,.8]]}]},
+{n:"Transição",h:1,i:{1:[329,284],2:[464,183],3:[33,182],4:[171,284],5:[313,69]},s:[
+{t:"Passe de 1 para 4",d:"Passe curto de 1 para 4 para iniciar a transição.",T:2000,m:{},p:[[1,4,.2]]},
+{t:"Passe para 3 e corte de 1",d:"4 passa a 3; 1 corta pela zona até ao canto esquerdo.",T:3200,m:{1:[33,41,0,260,20]},p:[[4,3,.15]]},
+{t:"Bloqueio de 4 e drible de 3",d:"3 dribla até ao topo passando pelo bloqueio de 4; 2 abre.",T:3800,m:{3:[306,288,"d",110,330],4:[105,205,"s"],2:[381,273]}},
+{t:"Troca de lado",d:"3 continua o drible e entrega a 2 na direita; 4 e 5 abrem ao cesto; 1 sobe à ala.",T:3600,m:{3:[470,188,"d",380,300],4:[178,65,0,190,170],5:[329,65],1:[54,198]},p:[[3,2,.55]]},
+{t:"5 sobe ao bloqueio",d:"5 sobe para bloquear e 2 usa o bloqueio, driblando para a esquerda.",T:3600,m:{5:[223,269,"s",320,170],2:[193,305,"d",290,330]}},
+{t:"Saída e continuação",d:"2 sai do bloqueio e ataca; 5 abre ao cesto (rolamento); 1, 3 e 4 ocupam os lados.",T:3400,m:{2:[336,244,"d",260,310],5:[306,120,0,230,200],4:[186,83],1:[29,88],3:[467,88]}}]}];
+const F=.16,$=s=>document.querySelector(s),sv=$("#sv"),NS="http://www.w3.org/2000/svg";
+let M=0,pi=0,si=-1,sp=1,an=0,A,E,S;
+const X=x=>M?500-x:x;
+const bez=(s,m,v)=>{const cx=m[3]==null?(s[0]+m[0])/2:m[3],cy=m[4]==null?(s[1]+m[1])/2:m[4],w=1-v;return[w*w*s[0]+2*w*v*cx+v*v*m[0],w*w*s[1]+2*w*v*cy+v*v*m[1]]};
+function pl(a,st,id,u){const s=a.p[id],m=st.m[id];if(!m)return s;const d=m[5]||0;let v=Math.min(1,Math.max(0,(u-d)/(1-d)));return bez(s,m,v*v*v*(v*(v*6-15)+10))}
+function cmp(a,st,u){const p={};for(const id in a.p)p[id]=pl(a,st,id,u);let h=a.h,b=null,r=6;
+for(const[f,t,at]of st.p||[]){if(u>=at+F){h=t;continue}if(u>=at){const k=(u-at)/F,x=pl(a,st,f,at),y=pl(a,st,t,at+F);b=[x[0]+(y[0]-x[0])*k,x[1]+(y[1]-x[1])*k];r=6+3*Math.sin(k*Math.PI);h=null}break}
+if(h){const q=p[h],m=st.m[h];b=[q[0]+10,q[1]+9];if(m&&m[2]=="d"&&u>0&&u<1){const z=Math.sin(u*st.T/90);r=6+2*Math.abs(z);b[1]+=4*z}}
+return{p,b,r,h}}
+function build(){const P=J[pi];S=P.s;A=[];E=[];S.forEach((st,j)=>{A[j]=j?(st.b!=null?E[st.b]:E[j-1]):{p:P.i,h:P.h};E[j]=cmp(A[j],st,1)})}
+const pg=$("#pg"),bl=$("#bl"),ov=$("#ov");
+for(let i=1;i<=5;i++){const g=document.createElementNS(NS,"g");g.innerHTML=`<circle r="15" fill="var(--pl)" stroke="var(--ac)" stroke-width="2"/><text y="5.5" text-anchor="middle" font-size="16" font-weight="700" fill="var(--plt)">${i}</text>`;g.id="p"+i;pg.appendChild(g)}
+function draw(R){for(const id in R.p){const q=R.p[id];$("#p"+id).setAttribute("transform",`translate(${X(q[0])},${q[1]})`)}
+bl.setAttribute("cx",X(R.b[0]));bl.setAttribute("cy",R.b[1]);bl.setAttribute("r",R.r)}
+function showOv(j){ov.innerHTML="";if(j<0)return;const st=S[j],a=A[j];let h="";
+for(const id in st.m){const m=st.m[id],s=a.p[id],pts=[];for(let k=0;k<=30;k++){const q=bez(s,m,k/30);pts.push([X(q[0]),q[1]])}
+const n=pts.length-1,dx=pts[n][0]-pts[n-1][0],dy=pts[n][1]-pts[n-1][1],l=Math.hypot(dx,dy)||1;
+let P=pts;if(m[2]=="d")P=pts.map((q,k)=>{const o=k>0&&k<n?4*Math.sin(k*1.7):0,t=pts[Math.min(n,k+1)],u=pts[Math.max(0,k-1)],tx=t[0]-u[0],ty=t[1]-u[1],tl=Math.hypot(tx,ty)||1;return[q[0]-ty/tl*o,q[1]+tx/tl*o]});
+const ps=P.map(q=>q.map(z=>z.toFixed(1)).join(",")).join(" ");
+if(m[2]=="s"){const e=pts[n],nx=-dy/l*10,ny=dx/l*10;h+=`<polyline points="${ps}"/><line x1="${e[0]-nx}" y1="${e[1]-ny}" x2="${e[0]+nx}" y2="${e[1]+ny}" stroke-width="4"/>`}
+else h+=`<polyline points="${ps}" marker-end="url(#ar)"/>`}
+for(const[f,t,at]of st.p||[]){const x=pl(a,st,f,at),y=pl(a,st,t,at+F);h+=`<line x1="${X(x[0])}" y1="${x[1]}" x2="${X(y[0])}" y2="${y[1]}" stroke-dasharray="7 6" marker-end="url(#ar)"/>`}
+ov.innerHTML=h}
+function rest(){const j=si;if(j<0){draw(cmp(A[0],S[0],0));showOv(-1)}else{draw(cmp(A[j],S[j],1));showOv(j)}
+const P=J[pi],st=S[j];$("#ct").textContent=P.n+" · "+(j<0?"posições iniciais":"passo "+(j+1)+" de "+S.length);
+$("#tt").textContent=j<0?"Posições iniciais":st.t;$("#ds").textContent=j<0?"Carregue em Avançar para ver a jogada passo a passo. 1 tem a bola.":st.d;
+$("#br").innerHTML=S.map((_,k)=>`<i class="${k<=j?"on":""}"></i>`).join("");
+$("#bk").disabled=j<0;$("#fw").disabled=j>=S.length-1;$("#rp").disabled=j<0}
+function go(d){if(an)return;let j;if(d>0){if(si>=S.length-1)return;j=++si}else{if(si<0)return;j=si--}
+showOv(j);const T=S[j].T/sp,t0=performance.now();an=1;
+const f=n=>{const k=Math.min(1,(n-t0)/T);draw(cmp(A[j],S[j],d>0?k:1-k));if(k<1)requestAnimationFrame(f);else{an=0;rest()}};requestAnimationFrame(f)}
+function sel(k){if(an)return;pi=k;si=-1;build();rest();[...$("#tabs").children].forEach((b,i)=>b.classList.toggle("on",i==k))}
+J.forEach((p,k)=>{const b=document.createElement("button");b.textContent=p.n;b.onclick=()=>sel(k);$("#tabs").appendChild(b)});
+$("#fw").onclick=()=>go(1);$("#bk").onclick=()=>go(-1);
+$("#rp").onclick=()=>{if(an||si<0)return;si--;rest();go(1)};
+$("#mi").onclick=e=>{M^=1;e.target.textContent="⇋ Espelho: "+(M?"sim":"não");if(!an)rest()};
+$("#sp").onclick=e=>{sp=sp==1?.6:sp==.6?1.5:1;e.target.textContent="Velocidade "+sp+"×"};
+addEventListener("keydown",e=>{if(e.key=="ArrowRight")go(1);if(e.key=="ArrowLeft")go(-1)});
+sel(0);
+</script></body></html>
